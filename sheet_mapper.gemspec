@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'google-spreadsheet-ruby', '~> 0.2.1'
 
   s.add_development_dependency 'minitest', "~> 2.11.0"
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'fakeweb'
   s.add_development_dependency 'awesome_print'
