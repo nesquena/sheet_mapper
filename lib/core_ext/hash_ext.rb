@@ -1,4 +1,70 @@
-require 'active_support/core_ext/hash/keys'
+class Hash
+  # Return a new hash with all keys converted to strings.
+  def stringify_keys
+    dup.stringify_keys!
+  end
+
+  # Destructively convert all keys to strings.
+  def stringify_keys!
+    keys.each do |key|
+      self[key.to_s] = delete(key)
+    end
+    self
+  end
+
+  # Return a new hash with all keys converted to symbols, as long as
+  # they respond to +to_sym+.
+  def symbolize_keys
+    dup.symbolize_keys!
+  end
+
+  # Destructively convert all keys to symbols, as long as they respond
+  # to +to_sym+.
+  def symbolize_keys!
+    keys.each do |key|
+      self[(key.to_sym rescue key) || key] = delete(key)
+    end
+    self
+  end
+
+  alias_method :to_options,  :symbolize_keys
+  alias_method :to_options!, :symbolize_keys!
+
+  # Validate all keys in a hash match *valid keys, raising ArgumentError on a mismatch.
+  # Note that keys are NOT treated indifferently, meaning if you use strings for keys but assert symbols
+  # as keys, this will fail.
+  #
+  # ==== Examples
+  #   { :name => "Rob", :years => "28" }.assert_valid_keys(:name, :age) # => raises "ArgumentError: Unknown key(s): years"
+  #   { :name => "Rob", :age => "28" }.assert_valid_keys("name", "age") # => raises "ArgumentError: Unknown key(s): name, age"
+  #   { :name => "Rob", :age => "28" }.assert_valid_keys(:name, :age) # => passes, raises nothing
+  def assert_valid_keys(*valid_keys)
+    unknown_keys = keys - [valid_keys].flatten
+    raise(ArgumentError, "Unknown key(s): #{unknown_keys.join(", ")}") unless unknown_keys.empty?
+  end
+
+
+  # Returns an <tt>ActiveSupport::HashWithIndifferentAccess</tt> out of its receiver:
+  #
+  #   {:a => 1}.with_indifferent_access["a"] # => 1
+  #
+  def with_indifferent_access
+    ActiveSupport::HashWithIndifferentAccess.new_from_hash_copying_default(self)
+  end
+
+  # Called when object is nested under an object that receives
+  # #with_indifferent_access. This method will be called on the current object
+  # by the enclosing object and is aliased to #with_indifferent_access by
+  # default. Subclasses of Hash may overwrite this method to return +self+ if
+  # converting to an <tt>ActiveSupport::HashWithIndifferentAccess</tt> would not be
+  # desirable.
+  #
+  #   b = {:b => 1}
+  #   {:a => b}.with_indifferent_access["a"] # calls b.nested_under_indifferent_access
+  #
+  alias nested_under_indifferent_access with_indifferent_access
+end
+
 
 # This class has dubious semantics and we only have it so that
 # people can write <tt>params[:key]</tt> instead of <tt>params['key']</tt>
@@ -166,26 +232,3 @@ module ActiveSupport
 end
 
 HashWithIndifferentAccess = ActiveSupport::HashWithIndifferentAccess
-
-class Hash
-
-  # Returns an <tt>ActiveSupport::HashWithIndifferentAccess</tt> out of its receiver:
-  #
-  #   {:a => 1}.with_indifferent_access["a"] # => 1
-  #
-  def with_indifferent_access
-    ActiveSupport::HashWithIndifferentAccess.new_from_hash_copying_default(self)
-  end
-
-  # Called when object is nested under an object that receives
-  # #with_indifferent_access. This method will be called on the current object
-  # by the enclosing object and is aliased to #with_indifferent_access by
-  # default. Subclasses of Hash may overwrite this method to return +self+ if
-  # converting to an <tt>ActiveSupport::HashWithIndifferentAccess</tt> would not be
-  # desirable.
-  #
-  #   b = {:b => 1}
-  #   {:a => b}.with_indifferent_access["a"] # calls b.nested_under_indifferent_access
-  #
-  alias nested_under_indifferent_access with_indifferent_access
-end
