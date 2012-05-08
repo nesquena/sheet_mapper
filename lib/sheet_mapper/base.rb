@@ -1,5 +1,6 @@
 module SheetMapper
   class Base
+
     # SheetMapper::Base.new(0, ["foo", "bar"])
     def initialize(pos, data=[])
       @pos    = pos
