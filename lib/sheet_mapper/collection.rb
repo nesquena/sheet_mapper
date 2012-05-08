@@ -2,7 +2,7 @@ module SheetMapper
   class CollectionNotFound < StandardError; end
 
   class Collection
-    attr_reader :records
+    attr_reader :records, :worksheet
 
     # spreadsheet is a SheetMapper::Spreadsheet
     # SheetMapper::Collection.new(@sheet, @work)
