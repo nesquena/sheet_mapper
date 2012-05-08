@@ -2,9 +2,21 @@
 
 SheetMapper is about taking a google spreadsheet and converting a set of data rows into ruby objects.
 
+## Installation
+
+Setup in Gemfile:
+
+```ruby
+# Gemfile
+
+gem 'sheet_mapper'
+```
+
+and then `require 'sheet_mapper'` and you are done!
+
 ## Usage
 
-Define an object mapper:
+First, define yourself an object mapper:
 
 ```ruby
 class BubbleMapper < SheetMapper::Base
@@ -24,7 +36,8 @@ class BubbleMapper < SheetMapper::Base
 end
 ```
 
-Use a mapper:
+This describes the column mappings and transformations to turn a spreadsheet row into a ruby object. Then you can use
+a mapper within a worksheet collection:
 
 ```ruby
 sheet = SheetMapper::Worksheet.new(:mapper => BubbleMapper, :key => 'sheet_key', :login => 'user', :password => 'pass')
@@ -35,4 +48,8 @@ bubbles = collection.each do |bubble|
 end
 ```
 
-You can then use these collections of objects and transform them into any format as needed.
+You can then work with the objects within the collection and access their attributes.
+
+## Contributors
+
+SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Miso in 2012.
