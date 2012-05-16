@@ -16,7 +16,7 @@ and then `require 'sheet_mapper'` and you are done!
 
 ## Usage
 
-First, define yourself an object mapper:
+First, define an sheet object mapper:
 
 ```ruby
 class SomeMapper < SheetMapper::Base
@@ -36,20 +36,37 @@ class SomeMapper < SheetMapper::Base
 end
 ```
 
-This describes the column mappings and transformations to turn a spreadsheet row into a ruby object. Then you can use
-a mapper within a worksheet collection:
+The mapper describes the column mappings and transformations to turn a spreadsheet row into a ruby object. Then you can apply
+a mapper to any worksheet (collection):
 
 ```ruby
+# Login and access a particular spreadsheet by key
 sheet = SheetMapper::Spreadsheet.new(:mapper => SomeMapper, :key => 'k', :login => 'u', :password => 'p')
+# Find a particular worksheet (collection) by title
 collection = sheet.find_collection_by_title('title')
+# Iterate over the records within the worksheet
 records = collection.each do |record|
   p record.attributes
   # => { :foo => "...", :bar => false, ... }
 end
 ```
 
-You can then work with the objects within the collection and access their attributes.
+You can then work with the objects within the collection and access their attributes. You may also come across situations where you need access to 'meta' information associated with the collection. Use the 'cell' method to access arbitrary data points:
+
+```ruby
+# Accesses row 1, column 2 within the worksheet
+collection.cell(1, 2) => "foo"
+```
 
 ## Contributors
 
 SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Miso in 2012.
+
+## Tasks
+
+SheetMapper is a new gem and I would love submissions and patches. Particularly around allowing
+row data to be changed and then persisted back to the spreadsheet.
+
+## License
+
+Check `LICENSE` but of course feel free to use this in any projects.
