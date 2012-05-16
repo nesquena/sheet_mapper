@@ -19,19 +19,19 @@ and then `require 'sheet_mapper'` and you are done!
 First, define yourself an object mapper:
 
 ```ruby
-class BubbleMapper < SheetMapper::Base
+class SomeMapper < SheetMapper::Base
   # Defines each column for a row and maps each column to an attribute
-  columns :offset_seconds, :is_notable, :category, :body, :image_url, :link_text, :link_url
+  columns :foo, :bar, :baz
 
   # Defines the condition for a row to be considered valid
   def valid_row?
-    self[:body].present? && @pos > 7
+    self[:foo].present?
   end
 
   # Convert is_notable column to a boolean from raw string
   # Any methods named after a column will override the default value
   def is_notable
-    !!self[:is_notable].match(/true/i)
+    !!self[:bar].match(/true/i)
   end
 end
 ```
