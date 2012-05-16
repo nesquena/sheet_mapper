@@ -41,7 +41,7 @@ a mapper to any worksheet (collection):
 
 ```ruby
 # Login and access a particular spreadsheet by key
-sheet = SheetMapper::Spreadsheet.new(:mapper => SomeMapper, :key => 'k', :login => 'u', :password => 'p')
+sheet = SheetMapper::Spreadsheet.new(:mapper=>SomeMapper, :key=>'k', :login => 'u', :password => 'p')
 # Find a particular worksheet (collection) by title
 collection = sheet.find_collection_by_title('title')
 # Iterate over the records within the worksheet
