@@ -40,11 +40,11 @@ This describes the column mappings and transformations to turn a spreadsheet row
 a mapper within a worksheet collection:
 
 ```ruby
-sheet = SheetMapper::Worksheet.new(:mapper => BubbleMapper, :key => 'sheet_key', :login => 'user', :password => 'pass')
+sheet = SheetMapper::Worksheet.new(:mapper => SomeMapper, :key => 'key', :login => 'user', :password => 'pass')
 collection = sheet.find_collection_by_title('title')
-bubbles = collection.each do |bubble|
-  p bubble.attributes
-  # => { :offset_seconds => "...", :is_notable => false, ... }
+records = collection.each do |record|
+  p record.attributes
+  # => { :foo => "...", :bar => false, ... }
 end
 ```
 
