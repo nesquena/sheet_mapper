@@ -1,11 +1,13 @@
+$:.unshift File.dirname(__FILE__)
+
+require 'core_ext/hash_ext'   unless Hash.method_defined?(:symbolize_keys)
+require 'core_ext/object_ext' unless Object.method_defined?(:present?)
 require 'google_spreadsheet'
-require File.expand_path("../sheet_mapper/version", __FILE__)
-require File.expand_path("../core_ext/hash_ext", __FILE__) unless defined?(HashWithIndifferentAccess)
-require File.expand_path("../core_ext/object_ext", __FILE__) unless String.method_defined?(:blank?)
-require File.expand_path("../sheet_mapper/collection", __FILE__)
-require File.expand_path("../sheet_mapper/spreadsheet", __FILE__)
-require File.expand_path("../sheet_mapper/base", __FILE__)
+require 'sheet_mapper/version'
+require 'sheet_mapper/collection'
+require 'sheet_mapper/spreadsheet'
+require 'sheet_mapper/base'
 
 module SheetMapper
-  # Your code goes here...
+
 end
