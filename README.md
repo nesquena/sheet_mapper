@@ -40,7 +40,7 @@ This describes the column mappings and transformations to turn a spreadsheet row
 a mapper within a worksheet collection:
 
 ```ruby
-sheet = SheetMapper::Worksheet.new(:mapper => SomeMapper, :key => 'key', :login => 'user', :password => 'pass')
+sheet = SheetMapper::Worksheet.new(:mapper => SomeMapper, :key => 'k', :login => 'u', :password => 'p')
 collection = sheet.find_collection_by_title('title')
 records = collection.each do |record|
   p record.attributes
