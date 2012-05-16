@@ -67,6 +67,12 @@ SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Mis
 SheetMapper is a new gem and I would love submissions and patches. Particularly around allowing
 row data to be changed and then persisted back to the spreadsheet.
 
+## Continuous Integration ##
+
+[![Continuous Integration status](https://secure.travis-ci.org/nesquena/sheet_mapper.png)](http://travis-ci.org/nesquena/sheet_mapper)
+
+CI is hosted by [travis-ci.org](http://travis-ci.org).
+
 ## License
 
 Check `LICENSE` but of course feel free to use this in any projects.
