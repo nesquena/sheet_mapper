@@ -16,7 +16,7 @@ and then `require 'sheet_mapper'` and you are done!
 
 ## Usage
 
-First, define an sheet object mapper:
+First, you describe how to map a spreadsheet into data rows with a sheet object mapper:
 
 ```ruby
 class SomeMapper < SheetMapper::Base
@@ -64,7 +64,7 @@ SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Mis
 
 ## Tasks
 
-SheetMapper is a new gem and I would love submissions and patches. Particularly around allowing
+SheetMapper is a new gem and I would love feedback and patches. Particularly around allowing
 row data to be changed and then persisted back to the spreadsheet.
 
 ## Continuous Integration ##
