@@ -7,7 +7,7 @@ class GradeMapper < SheetMapper::Base
   columns :topic, :grade, :score
 
   def valid_row?
-    self[:topic].present? && @pos > 3
+    self[:topic].present? && @pos > 4
   end
 
   # Convert is_notable to boolean
@@ -27,4 +27,10 @@ puts "Name: #{name}, Age: #{age}"
 bubbles = collection.each do |bubble|
   p bubble.attributes # => { :topic => "...", :grade => "...", :score => "..." }
 end
+
+b = collection.records[1]
+b[:grade] = "B"
+b[:score] = 86
+
+collection.save
 
