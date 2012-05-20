@@ -31,6 +31,20 @@ module SheetMapper
       @worksheet[row, col]
     end
 
+    # Saves the records that have changed back to spreadsheet
+    # @collection.save
+    def save
+      return unless @records.present?
+      @worksheet.update_cells(@records.first.pos, 1, @records.map(&:attribute_values))
+      @worksheet.save
+    end
+
+    # Reload worksheet discarding changes not saved
+    def reload
+      @worksheet.reload
+      @records = process_records!
+    end
+
     protected
 
     # Converts all valid raw data hashes into mapped records
@@ -38,7 +52,7 @@ module SheetMapper
     def process_records!
       records = []
       @worksheet.rows.each_with_index do |record, index|
-        record = @mapper.new(index, record)
+        record = @mapper.new(index + 1, record)
         records << record if record.valid_row?
       end
       records

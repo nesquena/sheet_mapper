@@ -12,6 +12,8 @@ class TestMapper
   def name; record[:name]; end
   def age;  record[:age]; end
   def valid_row?; true; end
+  def pos; 3; end
+  def attribute_values; tuple; end
 end # TestMapper
 
 describe "Collection" do
@@ -82,4 +84,28 @@ describe "Collection" do
       assert_equal ["Joey", 67], rows[2].tuple
     end
   end # records
+
+  context "for save method" do
+    setup do
+      @collection = SheetMapper::Collection.new(@spreadsheet, @worksheet)
+      @rows = @collection.records
+    end
+
+    should "persist back to worksheet" do
+      @worksheet.expects(:update_cells).with(@rows.first.pos, 1, @rows.map(&:attribute_values))
+      @worksheet.expects(:save).once
+      @collection.save
+    end
+  end # save
+
+  context "for reload method" do
+    setup do
+      @collection = SheetMapper::Collection.new(@spreadsheet, @worksheet)
+    end
+
+    should "persist back to worksheet" do
+      @worksheet.expects(:reload).once
+      @collection.reload
+    end
+  end # reload
 end
