@@ -51,7 +51,30 @@ records = collection.each do |record|
 end
 ```
 
-You can then work with the objects within the collection and access their attributes. You may also come across situations where you need access to 'meta' information associated with the collection. Use the 'cell' method to access arbitrary data points:
+You can then work with objects within the collection and access their attributes. You can also modify objects and
+persist the changes back to the collection (worksheet):
+
+```ruby
+# Fetch the second data row from the spreadsheet
+record = collection.records[1]
+record[:foo] = "other"
+# Persist change of value to worksheet
+collection.save
+# or more explicitly collection.save(record)
+```
+
+If you want to reset changes made to your records, just use the reload method:
+
+```ruby
+# Fetch the second data row from the spreadsheet
+record = collection.records[1]
+record[:foo] = "other"
+# Reset unsaved changes
+collection.reload
+```
+
+You may also come across situations where you need access to 'meta' information associated with the collection.
+Use the 'cell' method to access arbitrary data points:
 
 ```ruby
 # Accesses row 1, column 2 within the worksheet
@@ -64,8 +87,7 @@ SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Mis
 
 ## Tasks
 
-SheetMapper is a new gem and I would love feedback and patches. Particularly around allowing
-row data to be changed and then persisted back to the spreadsheet.
+SheetMapper is a new gem and I would love any feedback and/or pull requests.
 
 ## Continuous Integration ##
 
