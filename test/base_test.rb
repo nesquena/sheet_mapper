@@ -17,8 +17,13 @@ describe "Base" do
     @data = ["Bob", 21, "Red"]
   end
 
-  should "support columns accessor" do
+  should "support columns class accessor" do
     assert_equal [:name, :age, :color], TestBase.columns
+  end
+
+  should "support pos instances accessor" do
+    @test = TestBase.new(1, @data)
+    assert_equal 1, @test.pos
   end
 
   context "for attributes method" do
@@ -53,4 +58,31 @@ describe "Base" do
       assert_equal 45, @test[:age]
     end
   end # assign []=
+
+  context "for attribute_values method" do
+    setup do
+      @test = TestBase.new(1, @data)
+      @test[:age] = 45
+    end
+
+    should "return attribute values in proper order as list" do
+      assert_equal ["Bob", 45, "Red"], @test.attribute_values
+    end
+  end # attribute_values
+
+  context "for changed? method" do
+    setup do
+      @test = TestBase.new(1, @data)
+    end
+
+    should "return false if not changed" do
+      @test[:age] = 21
+      assert_equal false, @test.changed?
+    end
+
+    should "return true if changed" do
+      @test[:age] = 45
+      assert_equal true, @test.changed?
+    end
+  end # attribute_values
 end # Base

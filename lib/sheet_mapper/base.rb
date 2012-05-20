@@ -1,7 +1,9 @@
 module SheetMapper
   class Base
 
-    # SheetMapper::Base.new(0, ["foo", "bar"])
+    attr_reader :pos
+
+    # SheetMapper::Base.new(1, ["foo", "bar"])
     def initialize(pos, data=[])
       @pos    = pos
       @data   = data
@@ -39,6 +41,18 @@ module SheetMapper
       true
     end
 
+    # Returns an array of data values based on the order of the spreadsheet
+    # @record.to_a => ["Foo", "Bar", 15]
+    def attribute_values
+      self.column_order.inject([]) { |res, name| res << @attrs[name]; res }
+    end
+
+    # Returns true if a record has been modified from original state
+    # @record.changed? => true
+    def changed?
+      @data != self.attribute_values
+    end
+
     protected
 
     # column_order => [:offset_seconds, :body, :link_url, :category]
@@ -60,16 +74,15 @@ module SheetMapper
     # Process all columns into an attribute hash
     def process_data
       m = HashWithIndifferentAccess.new
-      column_order.each { |name| m[name.to_s] = self.attribute_value(name) }
+      column_order.each { |name| m[name.to_s] = self.fetch_data_value(name) }
       m
     end
 
-    # attribute_value(:body, 1, 1) => "Foo"
-    # attribute_value(:image_url, 1, 3) => nil
-    # attribute_value(:link_text, 2) => "Article"
-    # Create a method "format_<name>" to transform the column value (or pass the value directly)
-    # Column position defaults to matching named column in `column_order`
-    def attribute_value(name)
+    # fetch_data_value(:body) => "Foo"
+    # fetch_data_value(:image_url) => nil
+    # fetch_data_value(:link_text) => "Article"
+    # Column position is found by matching named column in `column_order`
+    def fetch_data_value(name)
       val = @data[column_pos(name)]
       val = val.to_i if val && name.to_s =~ /_(id|num)/
       val
