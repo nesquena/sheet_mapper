@@ -1,6 +1,6 @@
 # SheetMapper
 
-SheetMapper is about taking a google spreadsheet and converting a set of data rows into ruby objects.
+SheetMapper is about taking a google spreadsheet and converting a set of data rows into simple ruby objects.
 
 ## Installation
 
@@ -13,6 +13,13 @@ gem 'sheet_mapper'
 ```
 
 and then `require 'sheet_mapper'` and you are done!
+
+## Rationale
+
+You may ask why you would need to have an object mapper from a Google Spreadsheet. Consider though that spreadsheets are collaborative, have revision tracking, securely authenticated, are accessible anywhere and are familiar to non-technical people. 
+
+If you ever needed a dead simple admin interface, configuration document, or basic content management system, a spreadsheet is a pretty great solution that requires very little engineering overhead. Next time you are in a position where non-technical people
+need to manage data, ask yourself if a spreadsheet might be a good first solution.
 
 ## Usage
 
