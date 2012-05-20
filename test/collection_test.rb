@@ -14,6 +14,7 @@ class TestMapper
   def valid_row?; true; end
   def pos; 3; end
   def attribute_values; tuple; end
+  def changed?; true; end
 end # TestMapper
 
 describe "Collection" do
@@ -91,10 +92,17 @@ describe "Collection" do
       @rows = @collection.records
     end
 
-    should "persist back to worksheet" do
-      @worksheet.expects(:update_cells).with(@rows.first.pos, 1, @rows.map(&:attribute_values))
+    should "persist back to worksheet all rows" do
+      @rows.each { |r| @worksheet.expects(:update_cells).with(r.pos, 1, [r.attribute_values]) }
       @worksheet.expects(:save).once
       @collection.save
+    end
+
+    should "persist back to worksheet one row" do
+      first_row = @collection.records.first
+      @worksheet.expects(:update_cells).with(first_row.pos, 1, [first_row.attribute_values])
+      @worksheet.expects(:save).once
+      @collection.save(first_row)
     end
   end # save
 

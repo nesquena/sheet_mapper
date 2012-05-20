@@ -33,9 +33,9 @@ module SheetMapper
 
     # Saves the records that have changed back to spreadsheet
     # @collection.save
-    def save
-      return unless @records.present?
-      @worksheet.update_cells(@records.first.pos, 1, @records.map(&:attribute_values))
+    # @collection.save(@record)
+    def save(records=@records)
+      Array(records).each { |r| @worksheet.update_cells(r.pos, 1, [r.attribute_values]) if r.changed? }
       @worksheet.save
     end
 
