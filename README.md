@@ -28,16 +28,18 @@ First, you describe how to map a spreadsheet into data rows with a sheet object 
 ```ruby
 class SomeMapper < SheetMapper::Base
   # Defines each column for a row and maps each column to an attribute
+  # Should be listed in the order the data appears in the spreadsheet
   columns :foo, :bar, :baz
 
   # Defines the condition for a row to be considered valid
+  # Also have access to `pos` which is the row number in the worksheet
   def valid_row?
-    self[:foo].present?
+    self[:foo].present? && self.pos > 2
   end
 
-  # Convert is_notable column to a boolean from raw string
-  # Any methods named after a column will override the default value
-  def is_notable
+  # Convert bar column to a boolean from raw string
+  # Any method named after a column will override the default value
+  def bar
     !!self[:bar].match(/true/i)
   end
 end
