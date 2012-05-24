@@ -7,6 +7,10 @@ class TestBase < SheetMapper::Base
     self[:age] * 2
   end
 
+  def age=(val)
+    self[:age] = val / 2
+  end
+
   def name
     self[:name].upcase
   end
@@ -19,14 +23,14 @@ describe "Base" do
 
   should "support columns class accessor" do
     assert_equal [:name, :age, :color], TestBase.columns
-  end
+  end # columns
 
   should "support pos instances accessor" do
     @test = TestBase.new(1, @data)
     assert_equal 1, @test.pos
-  end
+  end # pos
 
-  context "for attributes method" do
+  context "for attribute methods" do
     setup do
       @test = TestBase.new(1, @data)
     end
@@ -34,9 +38,22 @@ describe "Base" do
     should "return attribute hash" do
       assert_equal "BOB", @test.name
       assert_equal 42, @test.age
-      assert_equal "Red", @test[:color]
+      assert_equal "Red", @test.color
     end
   end # attributes
+
+  context "for assignment of attributes" do
+    setup do
+      @test = TestBase.new(1, @data)
+    end
+
+    should "allow assignments" do
+      @test.age   = 46
+      @test.color = "Black"
+      assert_equal 23, @test[:age]
+      assert_equal "Black", @test[:color]
+    end
+  end
 
   context "for accessing attribute" do
     setup do
@@ -58,6 +75,25 @@ describe "Base" do
       assert_equal 45, @test[:age]
     end
   end # assign []=
+
+  context "for color attribute accessor" do
+    setup do
+      @test = TestBase.new(1, @data)
+    end
+
+    should "support color auto accessor" do
+      assert_equal "Red", @test.color
+    end
+
+    should "support color auto assigner" do
+      @test.color = "Blue"
+      assert_equal "Blue", @test.color
+    end
+
+    should "respond to color auto accessor" do
+      assert_respond_to @test, :color
+    end
+  end
 
   context "for attribute_values method" do
     setup do

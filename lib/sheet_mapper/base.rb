@@ -8,6 +8,7 @@ module SheetMapper
       @pos    = pos
       @data   = data
       @attrs  = process_data
+      self.class.create_accessors!(@attrs)
     end
 
     # columns :offset_seconds, :body, :link_url, :category
@@ -86,6 +87,15 @@ module SheetMapper
       val = @data[column_pos(name)]
       val = val.to_i if val && name.to_s =~ /_(id|num)/
       val
+    end
+
+    # Creates getters and setters for all attributes
+    # Post.create_accessors!(:foo => 'bar', :baz => "foo")
+    def self.create_accessors!(attrs)
+      attrs.each do |name, value|
+        define_method(name) { self[name] } unless method_defined?(name)
+        define_method("#{name}=") { |val| self[name] = val } unless method_defined?("#{name}=")
+      end
     end
 
   end
