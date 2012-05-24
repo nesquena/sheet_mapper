@@ -96,7 +96,15 @@ SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Mis
 
 ## Tasks
 
-SheetMapper is a new gem and I would love any feedback and/or pull requests.
+SheetMapper is a new gem and I would love any feedback and/or pull requests. In particular:
+
+ * Inserting a data row into a collection
+ * Removing a data row from a collection
+ * Callbacks
+ * Validations
+ * Column Type Casting
+
+Please fork if you are inspired to add any of these or any other improvements.
 
 ## Continuous Integration ##
 
