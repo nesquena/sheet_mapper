@@ -43,7 +43,7 @@ describe "Base" do
       assert_equal 42, @test.age
       assert_equal "Red", @test.color
     end
-  end # attributes
+  end # attribute methods
 
   context "for assignment of attributes" do
     setup do
@@ -56,7 +56,20 @@ describe "Base" do
       assert_equal 23, @test[:age]
       assert_equal "Black", @test[:color]
     end
-  end
+  end # assignment of attributes
+
+  context "for attributes method" do
+    setup do
+      @test = TestBase.new(1, @data)
+    end
+
+    should "return attributes hash" do
+      hash = @test.attributes
+      assert_equal "BOB", hash[:name]
+      assert_equal 42, hash[:age]
+      assert_equal "Red", hash[:color]
+    end
+  end # attributes method
 
   context "for accessing attribute" do
     setup do
