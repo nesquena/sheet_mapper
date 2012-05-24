@@ -1,7 +1,8 @@
 require File.expand_path('../test_config.rb', __FILE__)
 
 class TestBase < SheetMapper::Base
-  columns :name, :age, :color
+  columns :name, :age
+  columns :color
 
   def age
     self[:age] * 2
@@ -15,6 +16,8 @@ class TestBase < SheetMapper::Base
     self[:name].upcase
   end
 end
+
+class TestBaseExt < TestBase; end
 
 describe "Base" do
   setup do
@@ -79,10 +82,12 @@ describe "Base" do
   context "for color attribute accessor" do
     setup do
       @test = TestBase.new(1, @data)
+      @test_ext = TestBaseExt.new(1, @data)
     end
 
     should "support color auto accessor" do
       assert_equal "Red", @test.color
+      assert_equal "Red", @test_ext.color
     end
 
     should "support color auto assigner" do
@@ -92,6 +97,7 @@ describe "Base" do
 
     should "respond to color auto accessor" do
       assert_respond_to @test, :color
+      assert_respond_to @test_ext, :color
     end
   end
 

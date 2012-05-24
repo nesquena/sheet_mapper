@@ -13,7 +13,8 @@ module SheetMapper
 
     # columns :offset_seconds, :body, :link_url, :category
     def self.columns(*names)
-      names.any? ? @columns = names : @columns
+      @columns ||= []
+      names.any? ? @columns += names : @columns
     end
 
     # Returns the spreadsheet as a hash
@@ -55,6 +56,11 @@ module SheetMapper
     end
 
     protected
+
+    # Allows subclasses to inherit class ivars for columns
+    def self.inherited(subclass)
+      subclass.instance_variable_set("@columns", @columns)
+    end
 
     # column_order => [:offset_seconds, :body, :link_url, :category]
     def column_order
