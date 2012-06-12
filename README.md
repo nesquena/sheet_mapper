@@ -95,7 +95,7 @@ collection.cell(1, 2) => "foo"
 SheetMapper was created by [Nathan Esquenazi](http://github.com/nesquena) at Miso in 2012. The following users
 contributed to the project:
 
- * (Derek Lindahl)[https://github.com/dlindahl] - Added simple delegation to collections
+ * [Derek Lindahl](https://github.com/dlindahl) - Added simple delegation to collections
 
 ## Tasks
 
