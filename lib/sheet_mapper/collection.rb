@@ -1,7 +1,9 @@
+require 'delegate'
+
 module SheetMapper
   class CollectionNotFound < StandardError; end
 
-  class Collection
+  class Collection < SimpleDelegator
     attr_reader :records, :worksheet
 
     # spreadsheet is a SheetMapper::Spreadsheet
@@ -11,12 +13,6 @@ module SheetMapper
       @worksheet   = worksheet
       @mapper      = @spreadsheet.mapper
       @records     = process_records!
-    end
-
-    # Each block for every mapped record
-    # @collection.each { |m| ...mapped obj... }
-    def each(&block)
-      records.each(&block)
     end
 
     # Returns an array of mapped records
@@ -43,6 +39,10 @@ module SheetMapper
     def reload
       @worksheet.reload
       @records = process_records!
+    end
+
+    def __getobj__
+      @records
     end
 
     protected
