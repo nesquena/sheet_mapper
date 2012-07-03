@@ -5,6 +5,7 @@ module SheetMapper
 
   class Collection < SimpleDelegator
     attr_reader :worksheet
+    attr_writer :mapper
 
     # spreadsheet is a SheetMapper::Spreadsheet
     # SheetMapper::Collection.new(@sheet, @work)
