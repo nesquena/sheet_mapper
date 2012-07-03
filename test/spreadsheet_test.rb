@@ -29,7 +29,6 @@ describe "Spreadsheet" do
       @sheet = SheetMapper::Spreadsheet.new(:mapper => Object, :key => 'foo', :login => 'login', :password => 'pass')
       @work_stub = stub(:worksheet)
       @work_stub.expects(:title).returns("FOO")
-      @work_stub.expects(:rows).returns([])
       @sheet_stub.expects(:worksheets).returns([@work_stub])
       @collection = @sheet.find_collection_by_title("foo")
     end
