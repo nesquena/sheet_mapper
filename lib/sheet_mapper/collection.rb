@@ -4,7 +4,7 @@ module SheetMapper
   class CollectionNotFound < StandardError; end
 
   class Collection < SimpleDelegator
-    attr_reader :records, :worksheet
+    attr_reader :worksheet
 
     # spreadsheet is a SheetMapper::Spreadsheet
     # SheetMapper::Collection.new(@sheet, @work)
@@ -12,7 +12,12 @@ module SheetMapper
       @spreadsheet = spreadsheet
       @worksheet   = worksheet
       @mapper      = @spreadsheet.mapper
-      @records     = process_records!
+    end
+
+    # Returns the processed records
+    # @collection.records => [<SheetMapper::Base>, ...]
+    def records
+      @records ||= process_records!
     end
 
     # Returns an array of mapped records
@@ -38,11 +43,11 @@ module SheetMapper
     # Reload worksheet discarding changes not saved
     def reload
       @worksheet.reload
-      @records = process_records!
+      @records = nil
     end
 
     def __getobj__
-      @records
+      records
     end
 
     protected
