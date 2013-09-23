@@ -5,7 +5,7 @@ describe "Spreadsheet" do
     @sheet_stub = stub(:sheet)
     @session_stub = stub(:session)
     @session_stub.expects(:spreadsheet_by_key).with('foo').returns(@sheet_stub)
-    ::GoogleSpreadsheet.expects(:login).with('login', 'pass').returns(@session_stub)
+    ::GoogleDrive.expects(:login).with('login', 'pass').returns(@session_stub)
   end
 
   context "for initialize" do
