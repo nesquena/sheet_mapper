@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'google-spreadsheet-ruby', '~> 0.2.1'
+  s.add_dependency 'google_drive', '>= 0.3.6'
 
   s.add_development_dependency 'minitest', "~> 2.11.0"
   s.add_development_dependency 'rake'

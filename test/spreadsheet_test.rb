@@ -4,28 +4,26 @@ describe "Spreadsheet" do
   setup do
     @sheet_stub = stub(:sheet)
     @session_stub = stub(:session)
-    @session_stub.expects(:spreadsheet_by_key).with('foo').returns(@sheet_stub)
-    ::GoogleSpreadsheet.expects(:login).with('login', 'pass').returns(@session_stub)
+    ::GoogleDrive.expects(:login).with('login', 'pass').returns(@session_stub)
   end
 
-  context "for initialize" do
-    setup do
-      @sheet = SheetMapper::Spreadsheet.new(:mapper => Object, :key => 'foo', :login => 'login', :password => 'pass')
-    end
+  [:key, :url, :title].each do |identifier|
+    context "for initialize by #{identifier}" do
+      setup do
+        @session_stub.expects(:"spreadsheet_by_#{identifier}").with('foo').returns(@sheet_stub)
+        @sheet = SheetMapper::Spreadsheet.new(:mapper => Object, identifier => 'foo', :login => 'login', :password => 'pass')
+      end
 
-    should "return spreadsheet class" do
-      assert_kind_of SheetMapper::Spreadsheet, @sheet
-    end
+      should "not return spreadsheet class" do
+        assert_kind_of SheetMapper::Spreadsheet, @sheet
+      end
 
-    should "have access to readers" do
-      assert_equal Object, @sheet.mapper
-      assert_equal @session_stub, @sheet.session
-      assert_equal @sheet_stub, @sheet.spreadsheet
-    end
-  end # initialize
+    end # initialize
+  end
 
   context "for find_collection_by_title method" do
     setup do
+      @session_stub.expects(:spreadsheet_by_key).with('foo').returns(@sheet_stub)
       @sheet = SheetMapper::Spreadsheet.new(:mapper => Object, :key => 'foo', :login => 'login', :password => 'pass')
       @work_stub = stub(:worksheet)
       @work_stub.expects(:title).returns("FOO")
