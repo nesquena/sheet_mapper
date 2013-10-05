@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{Map google spreadsheets to ruby objects}
   s.description = %q{Map google spreadsheets to ruby objects.}
+  s.license     = 'MIT'
 
   s.rubyforge_project = "sheet_mapper"
 
