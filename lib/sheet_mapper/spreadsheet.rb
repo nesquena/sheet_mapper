@@ -5,7 +5,7 @@ module SheetMapper
     # SheetMapper::Worksheet.new(:mapper => SomeMapper, :key => 'sheet_key', :login => 'user', :password => 'pass')
     def initialize(options={})
       @mapper   = options[:mapper]
-      @session = ::GoogleDriveV0.login(options[:login], options[:password])
+      @session = ::GoogleDrive.login(options[:login], options[:password])
       @spreadsheet = find_spreadsheet(options[:key], options[:url], options[:title])
     end
 
