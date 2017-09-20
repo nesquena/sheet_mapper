@@ -16,7 +16,7 @@ and then `require 'sheet_mapper'` and you are done!
 
 ## Rationale
 
-You may ask why you would need to have an object mapper from a Google Spreadsheet. Consider though that spreadsheets are collaborative, have revision tracking, securely authenticated, are accessible anywhere and are familiar to non-technical people. 
+You may ask why you would need to have an object mapper from a Google Spreadsheet. Consider though that spreadsheets are collaborative, have revision tracking, securely authenticated, are accessible anywhere and are familiar to non-technical people.
 
 If you ever needed a dead simple admin interface, configuration document, or basic content management system, a spreadsheet is a pretty great solution that requires very little engineering overhead. Next time you are in a position where non-technical people
 need to manage data, ask yourself if a spreadsheet might be a good first solution.
@@ -90,96 +90,9 @@ Use the 'cell' method to access arbitrary data points:
 collection.cell(1, 2) => "foo"
 ```
 
-## Setting up OAuth 2.0
-
-To start, [follow the instructions](https://developers.google.com/console/help/new/?hl=en_US#setting-up-oauth-20) provided by Google for enabling OAuth 2.0 integration with your Google Drive account.
-
-#### Service account, Web application, or installed application?
-
-If you are building an application that integrates with a known set of
-documents, it is recommended to create your Oauth credentials as a "Service
-account". This will generate a re-usable [PKCS key](https://en.wikipedia.org/wiki/PKCS_12).
-That means that once you authenticate the first time, no further action will be
-required on your part to maintain secure integration with Google.
-
-You can also choose the "installed application" (aka native application)
-credentials, but this requires that you access a specially crafted URL and enter
-in a authentication code each time your session times out. If you are building
-a CLI tool, this becomes tedious. If you are building a customer-facing
-application, it adds friction to the process.
-
-If you are building a web application that provides integration to your
-*customers* Google Drive, that is, unfortunately, not yet supported.
-
-### Authenticating with Google Drive
-
-#### Service Account
-
-First, make note of the Client ID and Email address (service address) that
-Google's OAuth Credentials generates for you. You can find these values under
-the "APIs & auth -> Credentials" menu of the Google Developers Console which can
-be reached at https://console.developers.google.com/project/[YOUR-APPLICATION-NAME]/apiui/credential
-
-Second, store your PKCS key somewhere on your server that is secure and
-accessible to your application's Ruby process. Make note of that path.
-
-In your application code:
-
-```ruby
-google_api = SheetMapper::ApiClient.new
-google_api.service_login(YOUR_CLIENT_ID, YOUR_SERVICE_ADDRESS, PATH_TO_YOUR_PKCS_KEY)
-```
-
-#### Installed/Native Application
-
-First, make note of the Client ID and Client secret that Google's OAuth
-Credentials generates for you. You can find these values under the
-"APIs & auth -> Credentials" menu of the Google Developers Console which can be
-reached at https://console.developers.google.com/project/[YOUR-APPLICATION-NAME]/apiui/credential
-
-In your application code:
-
-```ruby
-google_api = SheetMapper::ApiClient.new
-google_api.native_login(YOUR_OAUTH_ID, YOUR_CLIENT_SECRET)
-```
-
-Calling `SheetMapper::ApiClient#native_login` will prompt you via `STDIN` to
-open a specific URL and to enter the Auth Code that Google generates for you.
-
-This will authenticate your application for the life of the current session.
-
-##### Re-using an Installed/Native Application OAuth Session
-
-Once successfully authentication. you can re-use an OAuth session by persisting
-your session's Refresh Token somewhere like the file system or in your database:
-
-```ruby
-open(PATH_TO_REFRESH_TOKEN, 'w', 0600) do |f|
-  f.puts(google_api.refresh_token)
-end
-```
-
-Then, when requesting access to your Google Drive account in a new session:
-
-```ruby
-cached_refresh_token = File.open(PATH_TO_REFRESH_TOKEN, &:gets).chomp if File.exists?(PATH_TO_REFRESH_TOKEN)
-google_api = SheetMapper::ApiClient.new
-google_api.native_login(YOUR_OAUTH_ID, YOUR_CLIENT_SECRET, YOUR_REFRESH_TOKEN, cached_refresh_token)
-```
-
-Google indicates that the refresh token is good for 1-hour. If the token is
-fresh, then no prompt will be issued to open a URL or enter in any additional
-information.
-
-If the token is stale, you will be prompted to re-authenticate your application
-by opening the URL and entering in a new authentication code.
-
-#### Web Application
-
-Unfortunately, this method of OAuth authentication is not yet supported.
-
 ### Accessing Your Sheets
+
+To access your Sheets, you'll need to authentication with Google's Google Drive service. There are several ways to do this, all described in the [`google_drive` gem's documentation](https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md).
 
 Once you have a successfully authentication Google Drive session, you can access
 your sheets by passing your session into SheetMapper:
@@ -188,7 +101,7 @@ your sheets by passing your session into SheetMapper:
 sheet = SheetMapper::Spreadsheet.new(
   mapper: SomeMapper,
   key: SpreadsheetKey,
-  session: google_api.session
+  session: google_drive_session
 )
 sheet.find_collection_by_title('worksheet title')
 ```
